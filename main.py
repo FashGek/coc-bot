@@ -41,7 +41,7 @@ def openDonateDialog(Reg):
     donateTypeRegOffsetX = 75
     donateTypeRegOffsetY = 27
     
-    if Reg.exists(Pattern("1404875979174.png").similar(0.90), 15):
+    if Reg.exists(Pattern("1404875979174.png").similar(0.90), 30):
         print("donate icon found")
         for d in Reg.findAll("1404875979174.png"):
             donateTypeReg = Region(d.x - donateTypeRegOffsetX, d.y - donateTypeRegOffsetY, d.w + 2*donateTypeRegOffsetX ,18)
@@ -53,9 +53,10 @@ def openDonateDialog(Reg):
             print "search time:", time.time()- searchStartTime, "s"
             print "found results:", donateTypeRetVal
             if donateTypeRetVal:
-                if True in donateTypeRetVal[0:5]:
-                    donatetype = 4
-                elif True in donateTypeRetVal[5:]:
+                #if True in donateTypeRetVal[0:5]:
+                    #donatetype = 4
+                #el
+                if True in donateTypeRetVal[5:]:
                     donatetype = 2
             #test
             #can donate
@@ -87,7 +88,7 @@ def donateTypeNew(imgs, first = False, reg = None):
 def donateTroops(d, donatetype):
     donateTroopsPannelRegion = Region(d.x + 68, d.y - 117, 505, 285)
     #donateTroopsPannelRegion.highlight(1)
-    donateMatchImg = ["1405058824552.png", "1405004776299.png", "1405058846435.png", "1405058867849.png", "1405058887125.png"]
+    donateMatchImg = ["1405058824552.png", "1412124830532.png", "1405058846435.png", "1405058867849.png", "1405058887125.png"]
 
     startTime = time.time()
     while donateTroopsPannelRegion.exists(donateMatchImg[donatetype-1],0):
@@ -224,7 +225,7 @@ def beginAttack():
     if findAMatchReg.exists("1405497468202.png",3):
         click(findAMatchReg.getLastMatch())
 
-    searchTimer = 20
+    searchTimer = 50
     while searchTimer != 0:
         searchTimer = searchTimer -1
         searchTimer = searchFish(searchTimer)
@@ -384,7 +385,7 @@ sidebarRegion = Region(cocRegion.x + 2, cocRegion.y + 128, 270, cocRegion.h - 17
 
 
 #debug parameters:
-loop = 10000
+loop = 100000
 loopSleepTime = 3
 
 #global settings
@@ -392,8 +393,8 @@ setShowActions(True)
 Settings.MinSimilarity = 0.8
 Settings.MoveMouseDelay = 0
 setFindFailedResponse(SKIP)
-moneyLimit = 200000
-elixirLimit = 0
+moneyLimit = 0
+elixirLimit = 200000
 darkElixirLimit = 0
 resourceLimitType = "or"
 loopStart = time.time()
