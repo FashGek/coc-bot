@@ -1,0 +1,502 @@
+
+<html>
+   <head>
+      <style type="text/css">
+         .sikuli-code {
+            font-size: 20px;
+            font-family: "Osaka-mono", Monospace;
+            line-height: 1.5em;
+            display:table-cell;
+            white-space: pre-wrap;       /* css-3 */
+            white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
+            white-space: -pre-wrap;      /* Opera 4-6 */
+            white-space: -o-pre-wrap;    /* Opera 7 */
+            word-wrap: break-word;       /* Internet Explorer 5.5+ */
+            width: 99%;   /* remove horizontal scroll-bar when viewing in IE7 */
+         }
+         .sikuli-code img {
+            vertical-align: middle;
+            margin: 2px;
+            border: 1px solid #ccc;
+            padding: 2px;
+            -moz-border-radius: 5px;
+            -webkit-border-radius: 5px;
+            -moz-box-shadow: 1px 1px 1px gray;
+            -webkit-box-shadow: 1px 1px 2px gray;
+         }
+         .kw {
+            color: blue;
+         }
+         .skw {
+            color: rgb(63, 127, 127);
+         }
+
+         .str {
+            color: rgb(128, 0, 0);
+         }
+
+         .dig {
+            color: rgb(128, 64, 0);
+         }
+
+         .cmt {
+            color: rgb(200, 0, 200);
+         }
+
+         h2 {
+            display: inline;
+            font-weight: normal;
+         }
+
+         .info {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+            margin-bottom: 20px;
+            display: none;
+         }
+
+         a {
+            color: #9D2900;
+         }
+
+         body {
+            font-family: "Trebuchet MS", Arial, Sans-Serif;
+         }
+
+      </style>
+   </head>
+<body>
+<div class="info">
+<h2>donate.sikuli\donate.sikuli</h2> <a href="donate.sikuli\donate.zip">(Download this script)</a>
+</div>
+<pre class="sikuli-code">
+<span class="kw">import</span> thread
+<span class="cmt"># init environment</span>
+<span class="kw">def</span> startCOC():
+    <span class="cmt"># switch to Bluestacks, if Bluestacks is not running, start it</span>
+    switchApp(<span class="str">"C:\Program Files (x86)\BlueStacks\HD-StartLauncher.exe"</span>)
+    <span class="cmt"># aviod full screen</span>
+    waitVanish(<img src="1404874951038.png" />)
+    <span class="skw">sleep</span>(<span class="dig">3</span>)
+
+    <span class="kw">if</span> exists(<img src="1404874624486.png" />):
+        <span class="skw">type</span>(Key.F11)
+        <span class="kw">print</span> <span class="str">"To aviod full screen, F11 pressed!"</span>
+    <span class="cmt">#start COC, not working?</span>
+    <span class="skw">wait</span>(<img src="1404873600708.png" />,<span class="dig">30</span>)
+    <span class="skw">click</span>(<img src="1404873600708.png" />)
+
+<span class="kw">def</span> openSiderBar():
+    sidebarOpenerRegion = Region(sidebarRegion.x, sidebarRegion.y + <span class="dig">140</span>, <span class="dig">50</span>, <span class="dig">100</span>)
+    <span class="kw">if</span> sidebarOpenerRegion.exists(<img src="1405564549169.png" />,<span class="dig">0</span>):
+        <span class="skw">click</span>(sidebarOpenerRegion.getLastMatch())
+        <span class="skw">sleep</span>(<span class="dig">0.5</span>)
+    <span class="kw">if</span> sidebarOpenerRegion.exists(<img src="1405564549169.png" />,<span class="dig">0</span>):
+        <span class="skw">click</span>(sidebarOpenerRegion.getLastMatch())
+    <span class="kw">print</span> <span class="str">"SliderBar opened"</span>, time.time() - loopStart
+
+<span class="kw">def</span> closeSiderBar():
+    sidebarCloserRegion = Region(sidebarRegion.x + <span class="dig">260</span>, sidebarRegion.y + <span class="dig">140</span>, <span class="dig">50</span>, <span class="dig">100</span>)
+    <span class="kw">if</span> sidebarCloserRegion.exists(<img src="1405565294613.png" />,<span class="dig">0</span>):
+        <span class="skw">click</span>(sidebarCloserRegion.getLastMatch())
+        <span class="skw">sleep</span>(<span class="dig">0.5</span>)
+    <span class="kw">if</span> sidebarCloserRegion.exists(<img src="1405565294613.png" />,<span class="dig">0</span>):
+        <span class="skw">click</span>(Location(cocRegion.x + <span class="dig">1064</span>, cocRegion.y + <span class="dig">290</span>))
+        <span class="skw">click</span>(sidebarCloserRegion.getLastMatch())
+    <span class="kw">print</span> <span class="str">"SliderBar closed"</span>, time.time() - loopStart
+
+
+<span class="kw">def</span> openDonateDialog(Reg):
+    mmd = Settings.MoveMouseDelay <span class="cmt"># save default/actual value</span>
+    Settings.MoveMouseDelay = <span class="dig">0</span>
+    requestImages = [<img src="1404963677861.png" />, <img src="1404893661366.png" />, <img src="1404973195624.png" />, <img src="1405000459163.png" />, <img src="1405039582725.png" />, <img src="1404889472348.png" />, <img src="1404955811222.png" />,<img src="1405039210619.png" />, <img src="1405039285639.png" />, <img src="1405039311968.png" />]
+    donateTypeRegOffsetX = <span class="dig">75</span>
+    donateTypeRegOffsetY = <span class="dig">27</span>
+
+    <span class="kw">if</span> Reg.exists(Pattern(<img src="1404875979174.png" />).similar(<span class="dig">0.90</span>), <span class="dig">30</span>):
+        <span class="kw">print</span>(<span class="str">"donate icon found"</span>)
+        <span class="kw">for</span> d <span class="kw">in</span> Reg.findAll(<img src="1404875979174.png" />):
+            donateTypeReg = Region(d.x - donateTypeRegOffsetX, d.y - donateTypeRegOffsetY, d.w + <span class="dig">2</span>*donateTypeRegOffsetX ,<span class="dig">18</span>)
+            <span class="cmt">#donateTypeReg.highlight(1)</span>
+            donatetype = <span class="dig">0</span>
+            <span class="cmt">#test</span>
+            searchStartTime = time.time();
+            donateTypeRetVal = donateTypeNew(requestImages,  first = True, reg = donateTypeReg)
+            <span class="kw">print</span> <span class="str">"search time:"</span>, time.time()- searchStartTime, <span class="str">"s"</span>
+            <span class="kw">print</span> <span class="str">"found results:"</span>, donateTypeRetVal
+            <span class="kw">if</span> donateTypeRetVal:
+                <span class="cmt">#if True in donateTypeRetVal[0:5]:</span>
+                    <span class="cmt">#donatetype = 4</span>
+                <span class="cmt">#el</span>
+                <span class="kw">if</span> True <span class="kw">in</span> donateTypeRetVal[<span class="dig">5</span>:]:
+                    donatetype = <span class="dig">2</span>
+            <span class="cmt">#test</span>
+            <span class="cmt">#can donate</span>
+            <span class="kw">if</span> donatetype &gt; <span class="dig">0</span>:
+                <span class="kw">print</span> <span class="str">"donatetype is"</span>, donatetype
+                <span class="cmt">#avoid donate image move due to new chat</span>
+                <span class="kw">if</span> d.exists(Pattern(<img src="1404875979174.png" />).similar(<span class="dig">0.90</span>),<span class="dig">0</span>):
+                    <span class="skw">click</span> (d)
+                <span class="kw">elif</span> d.below(<span class="dig">50</span>).exists(<img src="1404875979174.png" />,<span class="dig">0</span>):
+                    newd = d.below(<span class="dig">50</span>).<span class="skw">find</span>(<img src="1404875979174.png" />)
+                    <span class="skw">click</span> (newd)
+                    d = newd
+                <span class="skw">sleep</span>(<span class="dig">0.5</span>)<span class="cmt">#wait for donate dialog to show up</span>
+                donateTroops(d, donatetype)
+    Settings.MoveMouseDelay = mmd <span class="cmt"># reset to original value</span>
+
+
+<span class="cmt">#https://answers.launchpad.net/sikuli/+faq/1731</span>
+<span class="kw">def</span> donateTypeNew(imgs, first = False, reg = None):
+   <span class="kw">if</span> <span class="kw">not</span> reg: reg = SCREEN
+   res = [False <span class="kw">for</span> img <span class="kw">in</span> imgs]
+   <span class="kw">for</span> i <span class="kw">in</span> range(len(imgs)):
+       <span class="kw">if</span> reg.exists(imgs[i], <span class="dig">0</span>):
+           res[i] = True
+           <span class="kw">if</span> first: <span class="kw">return</span> res
+       <span class="kw">if</span> True <span class="kw">in</span> res: <span class="kw">return</span> res
+   <span class="kw">return</span> None <span class="cmt"># nothing found within time </span>
+
+<span class="kw">def</span> donateTroops(d, donatetype):
+    donateTroopsPannelRegion = Region(d.x + <span class="dig">68</span>, d.y - <span class="dig">117</span>, <span class="dig">505</span>, <span class="dig">285</span>)
+    <span class="cmt">#donateTroopsPannelRegion.highlight(1)</span>
+    donateMatchImg = [<img src="1405058824552.png" />, <img src="1412124830532.png" />, <img src="1405058846435.png" />, <img src="1405058867849.png" />, <img src="1405058887125.png" />]
+
+    startTime = time.time()
+    <span class="kw">while</span> donateTroopsPannelRegion.exists(donateMatchImg[donatetype-<span class="dig">1</span>],<span class="dig">0</span>):
+        hover(donateTroopsPannelRegion.getLastMatch())
+        mouseDown(Button.LEFT)
+        <span class="kw">print</span> <span class="str">"donatetype"</span>, donatetype, <span class="str">"donated!"</span>
+        <span class="cmt">#connection lost</span>
+        <span class="kw">if</span> time.time() - startTime &gt; <span class="dig">10</span>:
+            reloadGame(cocRegion)
+    mouseUp(Button.RIGHT)
+
+    donateTroopsPannelCloseRegion = Region(d.x +  <span class="dig">523</span>, d.y - <span class="dig">91</span>, <span class="dig">26</span>, <span class="dig">26</span>)
+    donateTroopsPannelCloseRegion.highlight(<span class="dig">1</span>)
+    <span class="kw">if</span> donateTroopsPannelCloseRegion.exists(<img src="1405323529373.png" />,<span class="dig">0</span>):
+        <span class="skw">click</span>(donateTroopsPannelCloseRegion.getLastMatch())
+
+<span class="kw">def</span> sidebarToTop(Reg):
+    <span class="kw">if</span> Reg.exists(<img src="1404956625662.png" />,<span class="dig">0</span>):
+     <span class="skw">click</span>(Reg.getLastMatch())
+
+
+<span class="kw">def</span> reloadGame(Reg):
+    dialogRegion = Region(Reg.x + <span class="dig">255</span>, Reg.y + <span class="dig">225</span>, <span class="dig">555</span>, <span class="dig">157</span>)
+    <span class="kw">if</span> dialogRegion.exists(<img src="1405043079549.png" />,<span class="dig">0</span>):
+        <span class="skw">click</span>(<img src="1405043089333.png" />)
+        <span class="skw">sleep</span>(<span class="dig">3</span>)
+        trophyRegion = Region(Reg.x + <span class="dig">8</span>, Reg.y + <span class="dig">93</span>, <span class="dig">50</span>, <span class="dig">50</span>)
+        <span class="skw">wait</span>(<img src="1405043219918.png" />, <span class="dig">30</span>)
+        mapCentered = False
+        <span class="kw">print</span> <span class="str">"game reloaded from idle!"</span>, time.time() - loopStart
+    <span class="kw">elif</span> dialogRegion.exists(<img src="1405052462366.png" />,<span class="dig">0</span>):
+        <span class="skw">click</span>(<img src="1405052476880.png" />)
+        <span class="skw">sleep</span>(<span class="dig">3</span>)
+        trophyRegion = Region(Reg.x + <span class="dig">8</span>, Reg.y + <span class="dig">93</span>, <span class="dig">50</span>, <span class="dig">50</span>)
+        <span class="skw">wait</span>(<img src="1405043219918.png" />, <span class="dig">30</span>)
+        mapCentered = False
+        <span class="kw">print</span> <span class="str">"game reloaded from connection lost!"</span>, time.time() - loopStart
+    <span class="kw">elif</span> dialogRegion.exists(<img src="1405390862071.png" />,<span class="dig">0</span>):
+        <span class="skw">click</span>(<img src="1405052476880.png" />)
+        <span class="skw">sleep</span>(<span class="dig">3</span>)
+        trophyRegion = Region(Reg.x + <span class="dig">8</span>, Reg.y + <span class="dig">93</span>, <span class="dig">50</span>, <span class="dig">50</span>)
+        <span class="skw">wait</span>(<img src="1405043219918.png" />, <span class="dig">30</span>)
+        <span class="kw">print</span> <span class="str">"game reloaded from login failed!"</span>, time.time() - loopStart
+    <span class="kw">elif</span> dialogRegion.exists(<img src="1405491920221.png" />,<span class="dig">0</span>):
+        <span class="kw">while</span> dialogRegion.exists(<img src="1405491920221.png" />):
+            <span class="skw">sleep</span>(<span class="dig">30</span>)
+            <span class="skw">click</span>(<img src="1405491933067.png" />)
+            mapCentered = False
+        trophyRegion = Region(Reg.x + <span class="dig">8</span>, Reg.y + <span class="dig">93</span>, <span class="dig">50</span>, <span class="dig">50</span>)
+        <span class="skw">wait</span>(<img src="1405043219918.png" />, <span class="dig">30</span>)
+        <span class="kw">print</span> <span class="str">"game reloaded from take a break!"</span>, time.time() - loopStart
+<span class="kw">def</span> blockAppWindowToQuit(Reg):
+    appIconRegion = Region(Reg.x - <span class="dig">20</span>, Reg. y - <span class="dig">20</span> , <span class="dig">50</span>, <span class="dig">50</span>)
+    <span class="cmt">#appIconRegion.highlight(1)</span>
+    <span class="kw">if</span> <span class="kw">not</span> appIconRegion.exists(<img src="1405048905914.png" />):
+        exit(<span class="dig">0</span>)
+
+<span class="kw">def</span> reloadGameFallback(Reg):
+    <span class="kw">if</span> loop % <span class="dig">10</span> == <span class="dig">0</span>:
+        <span class="skw">click</span>(Location(cocRegion.x + <span class="dig">1064</span>, cocRegion.y + <span class="dig">290</span>))
+
+
+<span class="kw">def</span> centerMap():
+    closeSiderBar() <span class="cmt"># otherwise sidebar will move</span>
+
+    <span class="cmt">#zoom in max</span>
+    <span class="kw">for</span> x <span class="kw">in</span> range(<span class="dig">0</span>,<span class="dig">4</span>):
+        <span class="skw">type</span>( <span class="str">'-'</span> , KEY_CTRL )
+        <span class="skw">sleep</span>(<span class="dig">0.1</span>)
+    <span class="kw">if</span> cocRegion.exists(Pattern(<img src="1405090403276.png" />).similar(<span class="dig">0.60</span>),<span class="dig">0</span>):
+        stone =  cocRegion.getLastMatch()
+        <span class="cmt">#print stone</span>
+        <span class="skw">dragDrop</span>(stone.getCenter(), Location(cocRegion.x + <span class="dig">150</span>, cocRegion.y + <span class="dig">400</span>))
+
+    mapCentered = True
+
+<span class="kw">def</span> buildTroops():
+    <span class="kw">pass</span>
+
+<span class="kw">def</span> connectionLost():
+    <span class="kw">pass</span>
+
+<span class="kw">def</span> loginFailed():
+    <span class="kw">pass</span>
+
+<span class="kw">def</span> availableLoot():
+    moneyLootReg = Region(cocRegion.x + <span class="dig">45</span> ,cocRegion.y + <span class="dig">82</span>, <span class="dig">65</span>, <span class="dig">17</span>)
+    elixirLootReg = Region(cocRegion.x + <span class="dig">45</span> ,cocRegion.y + <span class="dig">107</span>, <span class="dig">65</span>, <span class="dig">17</span>)
+    darkElixirLootReg = Region(cocRegion.x + <span class="dig">45</span> ,cocRegion.y + <span class="dig">131</span>, <span class="dig">65</span>, <span class="dig">17</span>)
+    <span class="cmt">#moneyLootReg.highlight(1)</span>
+    <span class="cmt">#elixirLootReg.highlight(1)    </span>
+    <span class="cmt">#darkElixirLootReg.highlight(1)    </span>
+    availableMoney = numberOCR(moneyLootReg)
+    availableElixir = numberOCR(elixirLootReg)
+    availableDarkElixir = numberOCR(darkElixirLootReg)
+    <span class="cmt">#print availableMoney, availableElixir, availableDarkElixir</span>
+    <span class="kw">return</span> availableMoney, availableElixir, availableDarkElixir
+
+<span class="kw">def</span> numberOCR(Reg):
+    numberImages = [<img src="1405312945137.png" />,<img src="n1.png" />,<img src="1405310129098.png" />,<img src="1405310109194.png" />,<img src="1405309941282.png" />,<img src="1405310662779.png" />,<img src="1405310613718.png" />,<img src="1405310652149.png" />,<img src="1405310601618.png" />,<img src="1405310585463.png" />]
+    <span class="cmt">#find digital images</span>
+    digitalNumber = <span class="dig">0</span> <span class="cmt">#digital number</span>
+    resultList = list()
+    t1 = time.time()
+    Reg.highlight(<span class="dig">1</span>)
+    <span class="kw">for</span> x <span class="kw">in</span> numberImages:
+        <span class="kw">if</span> Reg.exists(x,<span class="dig">0</span>):
+            Reg.findAll(x)
+            <span class="cmt">#digital find result into list            </span>
+            digitalList = list(Reg.getLastMatches())
+            <span class="cmt">#convert list into tuple(image, digital)</span>
+            <span class="kw">for</span> y <span class="kw">in</span> digitalList:
+                <span class="cmt">#resultList.append(tuple(y,0))</span>
+                t = (y,digitalNumber)
+                resultList.append(t)
+        digitalNumber = digitalNumber+<span class="dig">1</span>
+    sortedResultList = sorted(resultList,key=<span class="kw">lambda</span> x: x[<span class="dig">0</span>].x)
+    <span class="cmt">#print sortedResultList</span>
+    ret = <span class="dig">0</span>
+    listLen = len(sortedResultList)
+    <span class="kw">for</span> x, i <span class="kw">in</span> enumerate(sortedResultList):
+        ret += <span class="dig">10</span> **(listLen - x - <span class="dig">1</span>) * i[<span class="dig">1</span>]
+    <span class="kw">return</span> ret
+
+<span class="kw">def</span> beginAttack():
+    closeSiderBar()
+    attackReg = Region(cocRegion.x + <span class="dig">14</span> ,cocRegion.y + <span class="dig">480</span>, <span class="dig">90</span>, <span class="dig">90</span>)
+    <span class="kw">if</span> attackReg.exists(<img src="1405497859508.png" />,<span class="dig">1</span>):
+        <span class="skw">click</span>(attackReg.getLastMatch())
+    <span class="cmt">#else:</span>
+
+    findAMatchReg = Region(cocRegion.x + <span class="dig">100</span> ,cocRegion.y + <span class="dig">400</span>, <span class="dig">170</span>, <span class="dig">85</span>)
+
+    <span class="kw">if</span> findAMatchReg.exists(<img src="1405497468202.png" />,<span class="dig">3</span>):
+        <span class="skw">click</span>(findAMatchReg.getLastMatch())
+
+    searchTimer = <span class="dig">50</span>
+    <span class="kw">while</span> searchTimer != <span class="dig">0</span>:
+        searchTimer = searchTimer -<span class="dig">1</span>
+        searchTimer = searchFish(searchTimer)
+        <span class="kw">print</span> <span class="str">"searchTimer"</span>, searchTimer
+
+<span class="kw">def</span> searchFish(searchTimer):
+    endBattleRegion = Region(cocRegion.x + <span class="dig">16</span>, cocRegion.y + <span class="dig">431</span>, <span class="dig">100</span>, <span class="dig">35</span>)
+    findNextRegion = Region(cocRegion.x + <span class="dig">917</span>, cocRegion.y + <span class="dig">396</span>, <span class="dig">70</span>, <span class="dig">70</span>)
+    endBattleRegion.exists(<img src="1405498017741.png" />, <span class="dig">15</span>)
+    endBattleRegion.getLastMatch().highlight(<span class="dig">3</span>)
+    loot =  availableLoot()
+    findNext = True
+    <span class="kw">if</span> resourceLimitType == <span class="str">"or"</span>:
+        <span class="kw">if</span> moneyLimit != <span class="dig">0</span>:
+            <span class="kw">if</span> loot[<span class="dig">0</span>] &gt;= moneyLimit:
+                sendTroops()
+                findNext = False
+        <span class="kw">if</span> elixirLimit != <span class="dig">0</span> <span class="kw">and</span> findNext:
+            <span class="kw">if</span> loot[<span class="dig">1</span>] &gt;= elixirLimit:
+                sendTroops()
+                findNext = False
+        <span class="kw">if</span> darkElixirLimit != <span class="dig">0</span> <span class="kw">and</span> findNext:
+            <span class="kw">if</span> loot[<span class="dig">2</span>] &gt;= darkElixirLimit:
+                sendTroops()
+                findNext = False
+    <span class="kw">elif</span> resourceLimitType == <span class="str">"and"</span>:
+        <span class="kw">if</span> (moneyLimit - loot[<span class="dig">0</span>])* moneyLimit &lt;= <span class="dig">0</span>:
+            <span class="kw">if</span> (elixirLimit - loot[<span class="dig">0</span>])* elixirLimit &lt;= <span class="dig">0</span>:
+                <span class="kw">if</span> (darkElixirLimit - loot[<span class="dig">0</span>])* darkElixirLimit &lt;= <span class="dig">0</span>:
+                    sendTroops()
+                    findNext = False
+
+
+    <span class="cmt">#no find a suiteable fish</span>
+    <span class="kw">if</span> findNext == True:
+        <span class="kw">if</span> findNextRegion.exists(<img src="1405503842861.png" />,<span class="dig">1</span>):
+            <span class="cmt">#findNextRegion.highlight(1) </span>
+            <span class="skw">click</span>(findNextRegion.getLastMatch())
+            <span class="skw">sleep</span>(<span class="dig">1</span>)
+    <span class="kw">else</span>:
+        searchTimer = <span class="dig">0</span>
+    <span class="kw">return</span> searchTimer
+
+
+<span class="kw">def</span> sendTroops():
+   <span class="skw">popup</span>(<span class="str">"FISH!"</span>)
+    <span class="cmt">#attackPattern1()</span>
+
+
+<span class="kw">def</span> attackPatten1():
+    deployPoints = [Location(cocRegion.x + <span class="dig">216</span>, cocRegion.y + <span class="dig">463</span>),
+            Location(cocRegion.x + <span class="dig">217</span>, cocRegion.y + <span class="dig">446</span>),
+            Location(cocRegion.x + <span class="dig">139</span>, cocRegion.y + <span class="dig">392</span>),
+            Location(cocRegion.x + <span class="dig">128</span>, cocRegion.y + <span class="dig">268</span>),
+            Location(cocRegion.x + <span class="dig">188</span>, cocRegion.y + <span class="dig">222</span>),
+            Location(cocRegion.x + <span class="dig">260</span>, cocRegion.y + <span class="dig">165</span>),
+            Location(cocRegion.x + <span class="dig">946</span>, cocRegion.y + <span class="dig">265</span>),
+            Location(cocRegion.x + <span class="dig">914</span>, cocRegion.y + <span class="dig">235</span>),
+            Location(cocRegion.x + <span class="dig">802</span>, cocRegion.y + <span class="dig">151</span>),
+            Location(cocRegion.x + <span class="dig">839</span>, cocRegion.y + <span class="dig">469</span>),
+            Location(cocRegion.x + <span class="dig">942</span>, cocRegion.y + <span class="dig">406</span>),
+            Location(cocRegion.x + <span class="dig">1000</span>, cocRegion.y + <span class="dig">341</span>)]
+    troopsRegion = Region(cocRegion.x + <span class="dig">200</span>, cocRegion.y + <span class="dig">483</span>, <span class="dig">600</span>, <span class="dig">74</span>)
+    troopsRegion.highlight(<span class="dig">1</span>)
+    <span class="kw">while</span> troopsRegion.exists(<img src="1405581483191.png" />):
+        <span class="skw">click</span>(troopsRegion.getLastMatch())
+        <span class="kw">for</span> x <span class="kw">in</span> deployPoints:
+            <span class="skw">click</span>(x)
+    <span class="kw">while</span> troopsRegion.exists(<img src="1405581789516.png" />):
+        <span class="skw">click</span>(troopsRegion.getLastMatch())
+        <span class="kw">for</span> x <span class="kw">in</span> deployPoints:
+            <span class="skw">click</span>(x)
+    <span class="kw">while</span> troopsRegion.exists(<img src="1405581812872.png" />):
+        <span class="skw">click</span>(troopsRegion.getLastMatch())
+        <span class="kw">for</span> x <span class="kw">in</span> deployPoints:
+            <span class="skw">click</span>(x)
+    <span class="kw">while</span> troopsRegion.exists(<img src="1405581827297.png" />):
+        <span class="skw">click</span>(troopsRegion.getLastMatch())
+        <span class="kw">for</span> x <span class="kw">in</span> deployPoints:
+            <span class="skw">click</span>(x)
+<span class="cmt">##    while troopsRegion.exists("1405581483191.png"):</span>
+<span class="cmt">#        click(troopsRegion.getLastMatch())</span>
+<span class="cmt">#        for x in deployPoints:</span>
+<span class="cmt">#            click(x)</span>
+
+
+
+
+<span class="kw">def</span> trainTroops():
+
+    <span class="skw">click</span>(Location(cocRegion.x + <span class="dig">1064</span>, cocRegion.y + <span class="dig">290</span>))
+    <span class="kw">if</span> <span class="kw">not</span> mapCentered:
+        centerMap()
+    <span class="cmt">#avoid build selection text block barracks</span>
+    trainTroopsIconRegion = Region(cocRegion.x + <span class="dig">584</span>, cocRegion.y + <span class="dig">483</span>, <span class="dig">68</span>, <span class="dig">68</span>)
+    trainBarbarianRegion = Region(cocRegion.x + <span class="dig">312</span>, cocRegion.y + <span class="dig">248</span>, <span class="dig">90</span>, <span class="dig">90</span>)
+    trainArcherianRegion = trainBarbarianRegion.right(<span class="dig">90</span>)
+    trainGoblinRegion = trainArcherianRegion.right(<span class="dig">90</span>)
+    trainGiantRegion = trainGoblinRegion.right(<span class="dig">90</span>)
+    trainWBRegion = trainGiantRegion.right(<span class="dig">90</span>)
+    <span class="cmt">#......</span>
+
+    <span class="kw">if</span> cocRegion.exists(Pattern(<img src="1405577695617.png" />).similar(<span class="dig">0.60</span>), <span class="dig">0</span>) <span class="kw">and</span> <span class="kw">not</span> trainTroopsIconRegion.exists(<img src="1405566641801.png" />, <span class="dig">0</span>):
+        <span class="skw">click</span>(cocRegion.getLastMatch())
+    <span class="kw">if</span> trainTroopsIconRegion.exists(<img src="1405566641801.png" />, <span class="dig">1</span>):
+        <span class="skw">click</span>(trainTroopsIconRegion.getLastMatch())
+        trainBarbarianRegion.<span class="skw">wait</span>(<img src="1405567702748.png" />)
+        <span class="cmt">#barracks #1</span>
+        g = trainGiantRegion
+        <span class="kw">if</span> trainGiantRegion.exists(<img src="1405578421081.png" />):
+            hover(trainGiantRegion.getLastMatch())
+            mouseDown(Button.LEFT)
+            <span class="skw">sleep</span>(<span class="dig">3</span>)
+            mouseUp(Button.LEFT)
+        <span class="skw">sleep</span>(<span class="dig">1</span>)
+        <span class="skw">click</span>(Location(cocRegion.x + <span class="dig">827</span>, cocRegion.y + <span class="dig">310</span>))
+        <span class="cmt">#barracks #2</span>
+        <span class="kw">if</span> trainWBRegion.exists(<img src="1405578455807.png" />):
+            hover(trainWBRegion.getLastMatch())
+            mouseDown(Button.LEFT)
+            <span class="skw">sleep</span>(<span class="dig">1</span>)
+            mouseUp(Button.LEFT)
+        <span class="kw">if</span> trainGoblinRegion.exists(<img src="1405577880629.png" />):
+            hover(trainGoblinRegion.getLastMatch())
+            mouseDown(Button.LEFT)
+            <span class="skw">sleep</span>(<span class="dig">2</span>)
+            mouseUp(Button.LEFT)
+
+        <span class="skw">sleep</span>(<span class="dig">1</span>)
+        <span class="skw">click</span>(Location(cocRegion.x + <span class="dig">827</span>, cocRegion.y + <span class="dig">310</span>))
+        <span class="cmt">#barracks #3</span>
+        <span class="kw">if</span> trainBarbarianRegion.exists(<img src="1405578393272.png" />):
+            hover(trainBarbarianRegion.getLastMatch())
+            mouseDown(Button.LEFT)
+            <span class="skw">sleep</span>(<span class="dig">3</span>)
+            mouseUp(Button.LEFT)
+        <span class="skw">sleep</span>(<span class="dig">1</span>)
+        <span class="skw">click</span>(Location(cocRegion.x + <span class="dig">827</span>, cocRegion.y + <span class="dig">310</span>))
+        <span class="cmt">#barracks #4</span>
+        <span class="kw">if</span> trainArcherianRegion.exists(<img src="1405578407858.png" />):
+            hover(trainArcherianRegion.getLastMatch())
+            mouseDown(Button.LEFT)
+            <span class="skw">sleep</span>(<span class="dig">3</span>)
+            mouseUp(Button.LEFT)
+        trainTroopsPannelCloseRegion = Region(cocRegion.x + <span class="dig">777</span>, cocRegion.y + <span class="dig">124</span>, <span class="dig">42</span>, <span class="dig">42</span>)
+        trainTroopsPannelCloseRegion.highlight(<span class="dig">1</span>)
+        <span class="kw">if</span> trainTroopsPannelCloseRegion.exists(<img src="1405579252006.png" />,<span class="dig">0</span>):
+            <span class="skw">click</span>(trainTroopsPannelCloseRegion.getLastMatch())
+
+
+<span class="cmt">######################## Main Loop #######################</span>
+<span class="cmt">#startCOC()</span>
+<span class="cmt">#set Regtions</span>
+
+cocRegion = App(<span class="str">"Bluestacks"</span>).window(<span class="dig">0</span>)
+sidebarRegion = Region(cocRegion.x + <span class="dig">2</span>, cocRegion.y + <span class="dig">128</span>, <span class="dig">270</span>, cocRegion.h - <span class="dig">175</span>)
+
+
+<span class="cmt">#debug parameters:</span>
+loop = <span class="dig">100000</span>
+loopSleepTime = <span class="dig">3</span>
+
+<span class="cmt">#global settings</span>
+setShowActions(True)
+Settings.MinSimilarity = <span class="dig">0.8</span>
+Settings.MoveMouseDelay = <span class="dig">0</span>
+setFindFailedResponse(SKIP)
+moneyLimit = <span class="dig">0</span>
+elixirLimit = <span class="dig">200000</span>
+darkElixirLimit = <span class="dig">0</span>
+resourceLimitType = <span class="str">"or"</span>
+loopStart = time.time()
+mapCentered = False
+
+<span class="kw">for</span> n <span class="kw">in</span> range(loop):
+    loopStart = time.time()
+
+    reloadGame(cocRegion)
+
+    openSiderBar()
+
+    sidebarToTop(sidebarRegion)
+
+    openDonateDialog(sidebarRegion)
+
+    closeSiderBar()
+
+    <span class="skw">sleep</span>(loopSleepTime)
+
+    blockAppWindowToQuit(cocRegion)
+
+    reloadGameFallback(cocRegion)
+
+    <span class="kw">print</span> <span class="str">"Time used in this loop:["</span>, n, <span class="str">"]"</span>, time.time() - loopStart
+
+<span class="cmt">#attackPatten1()</span>
+<span class="cmt">#centerMap()</span>
+<span class="cmt">#trainTroops()</span>
+beginAttack()
+</pre>
+</body>
+</html>
